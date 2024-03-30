@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Register = () => {
@@ -9,11 +9,20 @@ const Register = () => {
     password: "",
   });
 
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     axios
       .post("http://localhost:8081/register", values)
-      .then((res) => console.log(res))
+      .then((res) => {
+        // console.log(res)
+        if (res.data.Status === "Success") {
+          navigate("/login");
+        } else {
+          alert("Error");
+        }
+      })
       .then((err) => console.log(err));
   };
   return (
