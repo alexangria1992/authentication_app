@@ -1,17 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Register = () => {
+  const [values, setValues] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    axios
+      .post("http://localhost:8081/register", values)
+      .then((res) => console.log(res))
+      .then((err) => console.log(err));
+  };
   return (
     <div className="d-flex justify-content-center align-items-center bg-primary vh-100">
       <div className="bg-white p-3 rounded w-25">
         <h2>Sign Up</h2>
-        <form className="mb-3">
+        <form onSubmit={handleSubmit} className="mb-3">
           <div className="mb-3">
             <label htmlFor="name">
               <strong>Name</strong>
             </label>
             <input
+              onChange={(e) => setValues({ ...values, name: e.target.value })}
               type="text"
               placeholder="Enter Name"
               name="name"
@@ -23,6 +38,7 @@ const Register = () => {
               <strong>Email</strong>
             </label>
             <input
+              onChange={(e) => setValues({ ...values, email: e.target.value })}
               type="email"
               placeholder="Enter Email"
               name="email"
@@ -34,6 +50,9 @@ const Register = () => {
               <strong>Password</strong>
             </label>
             <input
+              onChange={(e) =>
+                setValues({ ...values, password: e.target.value })
+              }
               type="password"
               placeholder="Enter Password"
               name="password"
